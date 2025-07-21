@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Gocestgo - Inscription / Réinscription</title>
+  <style>
+  body {
+    font-family: Arial, sans-serif;
+    background-color: white;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  header {
+    background-color: #003366; /* Bleu foncé */
+    color: white;
+    width: 100%;
+    padding: 20px 0;
+    text-align: center;
+    font-size: 2em;
+    font-weight: bold;
+    user-select: none;
+  }
+
+  main {
+    flex-grow: 1;
+    width: 100%;
+    max-width: 700px;
+    padding: 20px;
+    box-sizing: border-box;
+  }
+
+  .centered {
+    text-align: center;
+    margin-top: 80px;
+  }
+
+  .btn {
+    display: inline-block;
+    padding: 15px 40px;
+    margin: 20px 15px;
+    font-size: 20px;
+    font-weight: bold;
+    color: white;
+    background-color: #007bff; /* Bleu vif */
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+  }
+
+  .btn:hover {
+    background-color: #0056b3;
+  }
+
+  .form-section {
+    background: #f9f9f9;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    margin-top: 30px;
+    display: none;
+  }
+
+  .form-section.active {
+    display: block;
+  }
+
+  h1 {
+    text-align: center;
+    color: #003366;
+    margin-bottom: 20px;
+  }
+
+  label {
+    display: block;
+    margin-top: 15px;
+    font-weight: bold;
+    color: #003366;
+  }
+
+  input, select {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 16px;
+  }
+
+  button.submit-btn {
+    margin-top: 20px;
+    width: 100%;
+    padding: 12px;
+    background-color: #007bff;
+    color: white;
+    font-size: 18px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+
+  button.submit-btn:hover {
+    background-color: #0056b3;
+  }
+
+  .success-message {
+    display: none;
+    margin-top: 20px;
+    padding: 15px;
+    background-color: #d4edda;
+    color: #155724;
+    border-radius: 4px;
+    text-align: center;
+  }
+
+  .preview-container {
+    margin-top: 10px;
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .preview-image {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+
+  .back-btn {
+    margin-top: 15px;
+    display: inline-block;
+    color: #007bff;
+    cursor: pointer;
+    font-weight: bold;
+    text-decoration: underline;
+  }
+
+  /* Style du conteneur QR code */
+  #qrcode {
+    margin-top: 40px;
+    display: inline-block;
+  }
+</style>
+
+<!-- Ajout de la bibliothèque QRCode.js -->
+<script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+
+</head>
+<body>
+  <header>Gocestgo - Inscription / Réinscription</header>
+  <main>
+    <!-- Page d'accueil -->
+    <section id="homeSection" class="centered">
+      <h1>Bienvenue sur Gocestgo</h1>
+      <p>Choisissez une option pour continuer :</p>
+      <button class="btn" id="btnInscrire">S'INSCRIRE</button>
+      <button class="btn" id="btnReinscrire">SE RÉINSCRIRE</button>
+
+      <!-- Conteneur pour le QR code -->
+      <div id="qrcode"></div>
+      <p>Scannez ce QR code pour accéder rapidement à cette page.</p>
+    </section>
+
+    <!-- Formulaire Inscription -->
+    <section id="inscriptionSection" class="form-section">
+      <h1>Inscription à l'école</h1>
+      <form id="registrationForm" enctype="multipart/form-data">
+        <label for="nom">Nom :</label>
+        <input type="text" id="nom" name="nom" required />
+
+        <label for="prenom">Prénom :</label>
+        <input type="text" id="prenom" name="prenom" required />
+
+        <label for="dob">Date de naissance :</label>
+        <input type="date" id="dob" name="dob" required />
+
+        <label for="email">Email :</label>
+        <input type="email" id="email" name="email" required />
+
+        <label for="tel">Numéro de téléphone :</label>
+        <input type="tel" id="tel" name="tel" required pattern="[0-9]{9,15}" placeholder="Ex: 0612345678" />
+
+        <label for="classe">Classe / Niveau :</label>
+        <select id="classe" name="classe" required>
+          <option value="" disabled selected>Choisissez un niveau</option>
+          <optgroup label="Collège">
+            <option value="6eme">6ème</option>
+            <option value="5eme">5ème</option>
+            <option value="4eme">4ème</option>
+            <option value="3eme">3ème</option>
+          </optgroup>
+          <optgroup label="Lycée">
+            <option value="seconde">Seconde</option>
+            <option value="premiere_c">Première C</option>
+            <option value="premiere_d">Première D</option>
+            <option value="terminale_c">Terminale C</option>
+            <option value="terminale_d">Terminale D</option>
+            <option value="terminale_s">Terminale S</option>
+          </optgroup>
+        </select>
+
+        <!-- Documents -->
+        <label for="pieceIdentite">Pièce d’identité ou acte de naissance :</label>
+        <input type="file" id="pieceIdentite" name="pieceIdentite" accept="image/png, image/jpeg, application/pdf" required />
+        <div class="preview-container" id="previewPieceIdentite"></div>
+
+        <label for="justificatifDomicile">Justificatif de domicile :</label>
+        <input type="file" id="justificatifDomicile" name="justificatifDomicile" accept="image/png, image/jpeg, application/pdf" required />
+        <div class="preview-container" id="previewJustificatifDomicile"></div>
+
+        <label for="bulletins">Derniers bulletins scolaires :</label>
+        <input type="file" id="bulletins" name="bulletins" accept="image/png, image/jpeg, application/pdf" multiple required />
+        <div class="preview-container" id="previewBulletins"></div>
+
+        <label for="certificatMedical">Carnet de santé ou certificat médical :</label>
+        <input type="file" id="certificatMedical" name="certificatMedical" accept="image/png, image/jpeg, application/pdf" required />
+        <div class="preview-container" id="previewCertificatMedical"></div>
+
+        <label for="photosIdentite">Photos d’identité :</label>
+        <input type="file" id="photosIdentite" name="photosIdentite" accept="image/png, image/jpeg" multiple required />
+        <div class="preview-container" id="previewPhotosIdentite"></div>
+
+        <label for="formulaireSpecifique">Formulaire spécifique (optionnel) :</label>
+        <input type="file" id="formulaireSpecifique" name="formulaireSpecifique" accept="image/png, image/jpeg, application/pdf" />
+        <div class="preview-container" id="previewFormulaireSpecifique"></div>
+
+        <button type="submit" class="submit-btn">S'inscrire</button>
+      </form>
+      <div class="success-message" id="successMessageInscription">
+        Merci pour votre inscription ! Nous vous contacterons bientôt.
+      </div>
+      <div class="back-btn" id="backToHomeFromInscription">← Retour à l'accueil</div>
+    </section>
+
+    <!-- Formulaire Réinscription -->
+    <section id="reinscriptionSection" class="form-section">
+      <h1>Réinscription</h1>
+      <form id="reinscriptionForm" enctype="multipart/form-data">
+        <label for="emailReinscription">Email :</label>
+        <input type="email" id="emailReinscription" name="emailReinscription" required />
+
+        <label for="telReinscription">Numéro de téléphone :</label>
+        <input type="tel" id="telReinscription" name="telReinscription" required pattern="[0-9]{9,15}" placeholder="Ex: 0612345678" />
+
+        <label for="bulletinPhoto">Photo du bulletin de notes de l'année dernière :</label>
+        <input type="file" id="bulletinPhoto" name="bulletinPhoto" accept="image/png, image/jpeg" required />
+        <div class="preview-container" id="previewBulletin"></div>
+
+        <button type="submit" class="submit-btn">Demander la réinscription</button>
+      </form>
+      <div class="success-message" id="successMessageReinscription">
+        Votre demande de réinscription a été envoyée. Nous vous contacterons bientôt.
+      </div>
+      <div class="back-btn" id="backToHomeFromReinscription">← Retour à l'accueil</div>
+    </section>
+  </main>
+
+  <script>
+    // Génération du QR code avec l'URL actuelle
+    new QRCode(document.getElementById("qrcode"), {
+      text: window.location.href, // Lien actuel de la page
+      width: 180,
+      height: 180,
+      colorDark : "#000000",
+      colorLight : "#ffffff",
+      correctLevel : QRCode.CorrectLevel.H
+    });
+
+    // Navigation entre sections
+    const homeSection = document.getElementById('homeSection');
+    const inscriptionSection = document.getElementById('inscriptionSection');
+    const reinscriptionSection = document.getElementById('reinscriptionSection');
+
+    const btnInscrire = document.getElementById('btnInscrire');
+    const btnReinscrire = document.getElementById('btnReinscrire');
+
+    const backToHomeFromInscription = document.getElementById('backToHomeFromInscription');
+    const backToHomeFromReinscription = document.getElementById('backToHomeFromReinscription');
+
+    btnInscrire.addEventListener('click', () => {
+      homeSection.style.display = 'none';
+      inscriptionSection.classList.add('active');
+      reinscriptionSection.classList.remove('active');
+      clearMessagesAndForms();
+    });
+
+    btnReinscrire.addEventListener('click', () => {
+      homeSection.style.display = 'none';
+      reinscriptionSection.classList.add('active');
+      inscriptionSection.classList.remove('active');
+      clearMessagesAndForms();
+    });
+
+    backToHomeFromInscription.addEventListener('click', () => {
+      inscriptionSection.classList.remove('active');
+      homeSection.style.display = 'block';
+      clearMessagesAndForms();
+    });
+
+    backToHomeFromReinscription.addEventListener('click', () => {
+      reinscriptionSection.classList.remove('active');
+      homeSection.style.display = 'block';
+      clearMessagesAndForms();
+    });
+
+    function clearMessagesAndForms() {
+      // Inscription
+      document.getElementById('successMessageInscription').style.display = 'none';
+      document.getElementById('registrationForm').reset();
+      clearPreviews([
+        'previewPieceIdentite',
+        'previewJustificatifDomicile',
+        'previewBulletins',
+        'previewCertificatMedical',
+        'previewPhotosIdentite',
+        'previewFormulaireSpecifique'
+      ]);
+
+      // Réinscription
+      document.getElementById('successMessageReinscription').style.display = 'none';
+      document.getElementById('reinscriptionForm').reset();
+      clearPreviews(['previewBulletin']);
+    }
+
+    function clearPreviews(ids) {
+      ids.forEach(id => {
+        const container = document.getElementById(id);
+        if (container) container.innerHTML = '';
+      });
+    }
+
+    // Aperçu fichiers (images uniquement) multiples ou simples
+    function previewFiles(inputElement, previewContainerId) {
+      const previewContainer = document.getElementById(previewContainerId);
+      previewContainer.innerHTML = '';
+
+      if (inputElement.files.length === 0) return;
+
+      Array.from(inputElement.files).forEach(file => {
+        // On affiche l'image seulement si c'est une image (pdf ne sera pas affiché)
+        if (file.type.startsWith('image/')) {
+          const reader = new FileReader();
+          reader.onload = function(e) {
+            const img = document.createElement('img');
+            img.src = e.target.result;
+            img.classList.add('preview-image');
+            previewContainer.appendChild(img);
+          };
+          reader.readAsDataURL(file);
+        } else {
+          // Pour pdf, on peut juste afficher une icône ou un texte
+          const span = document.createElement('span');
+          span.textContent = `📄 ${file.name}`;
+          span.style.marginRight = '10px';
+          previewContainer.appendChild(span);
+        }
+      });
+    }
+
+    // Listeners pour tous les inputs fichiers inscription
+    document.getElementById('pieceIdentite').addEventListener('change', function() {
+      previewFiles(this, 'previewPieceIdentite');
+    });
+    document.getElementById('justificatifDomicile').addEventListener('change', function() {
+      previewFiles(this, 'previewJustificatifDomicile');
+    });
+    document.getElementById('bulletins').addEventListener('change', function() {
+      previewFiles(this, 'previewBulletins');
+    });
+    document.getElementById('certificatMedical').addEventListener('change', function() {
+      previewFiles(this, 'previewCertificatMedical');
+    });
+    document.getElementById('photosIdentite').addEventListener('change', function() {
+      previewFiles(this, 'previewPhotosIdentite');
+    });
+    document.getElementById('formulaireSpecifique').addEventListener('change', function() {
+      previewFiles(this, 'previewFormulaireSpecifique');
+    });
+
+    // Listener pour reinscription bulletin
+    document.getElementById('bulletinPhoto').addEventListener('change', function() {
+      previewFiles(this, 'previewBulletin');
+    });
+
+    // Soumission formulaire inscription
+    const formInscription = document.getElementById('registrationForm');
+    const successInscription = document.getElementById('successMessageInscription');
+
+    formInscription.addEventListener('submit', function(event) {
+      event.preventDefault();
+      // Ici tu peux envoyer les données vers un serveur via fetch, FormData, etc.
+      successInscription.style.display = 'block';
+      formInscription.reset();
+      clearPreviews([
+        'previewPieceIdentite',
+        'previewJustificatifDomicile',
+        'previewBulletins',
+        'previewCertificatMedical',
+        'previewPhotosIdentite',
+        'previewFormulaireSpecifique'
+      ]);
+    });
+
+    // Soumission formulaire réinscription
+    const formReinscription = document.getElementById('reinscriptionForm');
+    const successReinscription = document.getElementById('successMessageReinscription');
+
+    formReinscription.addEventListener('submit', function(event) {
+      event.preventDefault();
+      // Ici aussi tu peux gérer l'envoi au serveur
+      successReinscription.style.display = 'block';
+      formReinscription.reset();
+      clearPreviews(['previewBulletin']);
+    });
+  </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
